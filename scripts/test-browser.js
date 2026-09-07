@@ -19,6 +19,7 @@ try{
  run(['open','http://127.0.0.1:5173/'],'browser-open');
  run(['run-code','--filename','tests/browser-checks.cjs'],'browser-regression');
  run(['run-code','--filename','tests/gallery-checks.cjs'],'gallery-regression');
+ run(['run-code','--filename','tests/mobile-search-room.cjs'],'mobile-search-room');
  run(['run-code','--filename','tests/experience-checks.cjs'],'physical-experience');
  run(['run-code','--filename','tests/offline-checks.cjs'],'offline-and-touch');
  console.log('All browser checks passed. Screenshots and logs: output/playwright/');

@@ -1,4 +1,21 @@
 .scroll-hint{width:1px;height:18px;opacity:0}
+.view-tools [data-action="room"]{width:auto;min-height:44px;gap:8px;padding:0 10px;font-size:10px}
+.view-tools [data-action="room"] svg{width:18px;height:18px}
+#filter-panel{isolation:isolate}
+@media(max-width:760px){
+ #filter-panel{width:100%;margin:16px 0 24px;padding:12px}
+ .search-field{display:grid;grid-template-columns:18px minmax(0,1fr) 44px;gap:8px}
+ .search-field input{width:100%;min-width:0;font-size:16px;min-height:44px;padding:8px 0}
+ .search-field .icon-button{width:44px;height:44px;padding:0}
+ .filter-selects{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin-top:8px}
+ .filter-selects select{width:100%;max-width:100%;min-height:44px;font-size:13px;flex:none}
+ .reset-button{min-height:44px;text-align:left;padding:8px 4px}
+ .player-top{height:auto;min-height:44px}
+ .collection-player{min-width:0}
+ #filter-panel:not([hidden]) + #record-area .record-stage{margin-top:30px}
+ .record-room:has(#filter-panel:not([hidden])){overflow:auto}
+ .record-room:has(#filter-panel:not([hidden])) .hero{height:auto;overflow:visible}
+}
 .record-title h2{min-height:60px;display:flex;align-items:flex-start;overflow-wrap:anywhere}
 .gallery-thumbnails{max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;overscroll-behavior-y:none;touch-action:pan-x}
 .gallery-thumbnails>button{overflow:hidden}
