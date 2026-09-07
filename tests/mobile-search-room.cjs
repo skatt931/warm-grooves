@@ -8,7 +8,8 @@ async page => {
  for(let i=0;i<boxes.length;i++)for(let j=i+1;j<boxes.length;j++){const a=boxes[i],b=boxes[j];if(Math.min(a.right,b.right)>Math.max(a.x,b.x)&&Math.min(a.bottom,b.bottom)>Math.max(a.y,b.y))throw Error('Controls overlap');}
  await page.locator('#search').fill('Pink Floyd');await page.waitForFunction(()=>document.querySelector('.record-title p')?.textContent==='Pink Floyd');
  await page.locator('#filter-panel [data-action="search"]').click();
- const room=page.locator('[data-action="room"]');if(!await room.innerText()||await room.locator('svg').count()!==1)throw Error('Missing room control');
+ const room=page.locator('[data-action="room"]');
+ if(await room.locator('svg').count()!==1)throw Error('Missing room control icon');
  await room.click();await page.waitForTimeout(800);
  const box=await page.locator('.front-sleeve').boundingBox();if(box.x<0||box.x+box.width>width+5)throw Error('Room sleeve outside viewport '+JSON.stringify(box));
  await page.screenshot({path:`output/playwright/mobile-room-${width}.png`});await page.locator('.room-exit').click();

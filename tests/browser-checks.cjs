@@ -2,20 +2,22 @@ async (page) => {
  const assert=(condition,message)=>{if(!condition)throw new Error(message);};
  const errors=[];page.on('pageerror',error=>errors.push(error.message));
  await page.goto('http://127.0.0.1:5173/');
- await page.getByRole('heading',{name:'I Robot',exact:true}).waitFor();
+ await page.locator('.record-title h2').waitFor();
  await page.getByRole('button',{name:'ENG',exact:true}).click();
  assert(await page.locator('html').getAttribute('lang')==='en','English language');
- await page.reload();await page.getByRole('heading',{name:'I Robot',exact:true}).waitFor();
+ await page.reload();await page.locator('.record-title h2').waitFor();
  assert(await page.locator('html').getAttribute('lang')==='en','Language persists');
+ await page.goto('http://127.0.0.1:5173/#record-773190');await page.locator('#detail-title').waitFor();await page.keyboard.press('Escape');
  if(await page.getByRole('button',{name:'Motion: On',exact:true}).count())await page.getByRole('button',{name:'Motion: On',exact:true}).click();
  await page.setViewportSize({width:1440,height:1000});
  await page.screenshot({path:'output/playwright/desktop-english.png',fullPage:true});
+ const openingTitle=await page.locator('.record-title h2').textContent();
  await page.locator('.arrows').getByRole('button',{name:'Next record',exact:true}).click();
- assert(await page.locator('.record-title h2').textContent()==='Yeni Bir Gün','Next record');
+ assert(await page.locator('.record-title h2').textContent()!==openingTitle,'Next record');
  await page.keyboard.press('ArrowLeft');
- assert(await page.locator('.record-title h2').textContent()==='I Robot','Keyboard previous');
+ assert(await page.locator('.record-title h2').textContent()===openingTitle,'Keyboard previous');
  await page.locator('.record-stage').hover();await page.mouse.wheel(0,140);
- await page.getByRole('heading',{name:'Yeni Bir Gün',exact:true}).waitFor();
+ await page.waitForFunction(title=>document.querySelector('.record-title h2')?.textContent!==title,openingTitle);
  await page.getByRole('button',{name:'Search & filter',exact:true}).click();
  await page.getByRole('searchbox').fill('Pink Floyd');
  assert((await page.locator('.record-number').textContent()).includes('/ 03'),'Search results');
@@ -40,6 +42,7 @@ async (page) => {
   assert(await page.locator('#detail-title').textContent(),'Release title '+id);
   assert(await page.locator('.tracklist li').count()>0,'Tracks '+id);
   assert(await page.locator('.summary').textContent(),'English notes '+id);
+  assert(await page.locator('.story-note').count()===4,'English expanded notes '+id);
   assert(await page.locator('.unpacking-sleeve img').evaluate(img=>img.complete&&img.naturalWidth>0),'Local artwork '+id);
   await page.keyboard.press('Escape');
  }

@@ -21,6 +21,7 @@ try{
  run(['run-code','--filename','tests/gallery-checks.cjs'],'gallery-regression');
  run(['run-code','--filename','tests/mobile-search-room.cjs'],'mobile-search-room');
  run(['run-code','--filename','tests/experience-checks.cjs'],'physical-experience');
+ run(['run-code','--filename','tests/presentation-regressions.cjs'],'presentation-regressions');
  run(['run-code','--filename','tests/offline-checks.cjs'],'offline-and-touch');
  console.log('All browser checks passed. Screenshots and logs: output/playwright/');
 }catch(error){console.error(error.message);process.exitCode=1;}

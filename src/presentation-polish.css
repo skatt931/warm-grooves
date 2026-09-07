@@ -1,0 +1,26 @@
+/* Keep the record in its own stage on laptop screens; captions never sit under a sleeve. */
+@media (min-width:761px){
+  .record-stage{overflow:clip}
+  .record-caption{position:relative;z-index:4;background:linear-gradient(180deg,#1b1f19 0%,#1b1f19ed 86%,transparent);box-shadow:0 -16px 24px #1b1f1988}
+  .record-stage .main-record{max-width:min(460px,45svh);max-height:min(460px,45svh)}
+  .record-stage .back-sleeve{max-width:min(435px,43svh);max-height:min(435px,43svh)}
+}
+
+/* One aligned room control, centered on the same visual rail as the record room. */
+ .room-exit{display:inline-flex;align-items:center;justify-content:center;min-height:48px;line-height:1;right:max(4vw,calc((100vw - 1080px)/2));top:18px;padding:0 22px}
+@media (min-width:761px){.record-room .view-tools{margin-right:230px}}
+
+/* The minimal viewer preserves its existing album-coloured atmosphere. */
+#photo-dialog{perspective:1200px}
+.full-photo{touch-action:none;display:grid;place-items:center}
+.full-photo img{--photo-tilt-x:0deg;--photo-tilt-y:0deg;transform:perspective(1000px) rotateX(var(--photo-tilt-x)) rotateY(var(--photo-tilt-y));transition:transform .18s ease-out,filter .25s ease-out;will-change:transform;box-shadow:0 22px 45px #0008}
+.full-photo:active img{filter:brightness(1.06) saturate(1.06)}
+.photo-minimal .full-photo{background:transparent!important;inset:0;position:absolute;padding:4vh 4vw}
+.photo-minimal .full-photo img{max-width:92vw;max-height:92dvh;object-fit:contain}
+.photo-minimal::backdrop{background:inherit!important}
+
+@media (max-width:760px){
+  .room-exit{right:12px;top:12px;min-height:42px;padding:0 15px}
+  .full-photo{height:calc(100% - 155px);padding:8px}
+  .photo-minimal .full-photo{padding:2vh 3vw}
+}
