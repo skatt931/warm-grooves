@@ -77,13 +77,14 @@ export function wireTurntable(dialog,labels){
  let sideIndex=0;
  const controls=document.createElement('div');controls.className='side-controls';controls.innerHTML=`<button class="flip-record" type="button">${labels.flip}</button><span class="side-indicator" aria-live="polite"></span><button class="all-tracks" type="button">${labels.all}</button>`;dialog.querySelector('.turntable-controls').after(controls);
  const indicator=controls.querySelector('.side-indicator');
- function showSide(){const side=sides[sideIndex]||'A';table.dataset.side=side;indicator.textContent=`${labels.side} ${side}`;disc.dataset.side=side;rows.forEach(row=>{row.hidden=(row.querySelector('.track-position').textContent.match(/^[A-Za-z]+/)?.[0]||side)!==side;});}
+ function showSide(){controls.querySelector('.all-tracks').setAttribute('aria-pressed','false');const side=sides[sideIndex]||'A';table.dataset.side=side;indicator.textContent=`${labels.side} ${side}`;disc.dataset.side=side;rows.forEach(row=>{row.hidden=(row.querySelector('.track-position').textContent.match(/^[A-Za-z]+/)?.[0]||side)!==side;});}
  controls.querySelector('.flip-record').disabled=sides.length<2;
  controls.querySelector('.flip-record').onclick=async()=>{const button=controls.querySelector('.flip-record');button.disabled=true;const wasPaused=table.classList.contains('paused');table.classList.add('paused','flipping');
   if(!reduced())await disc.animate([{transform:'perspective(700px) rotateY(0deg)'},{transform:'perspective(700px) translateY(-25px) rotateY(90deg)'},{transform:'perspective(700px) rotateY(180deg)'}],{duration:720,easing:'ease-in-out'}).finished.catch(()=>{});
   sideIndex=(sideIndex+1)%sides.length;showSide();table.classList.remove('flipping');if(!wasPaused)table.classList.remove('paused');button.disabled=false;
  };
- controls.querySelector('.all-tracks').onclick=()=>{rows.forEach(row=>row.hidden=false);};showSide();
+ const showAll=()=>{rows.forEach(row=>row.hidden=false);controls.querySelector('.all-tracks').setAttribute('aria-pressed','true');};
+ controls.querySelector('.all-tracks').onclick=showAll;showSide();showAll();
  disc.removeAttribute('aria-hidden');disc.setAttribute('role','button');disc.tabIndex=0;disc.setAttribute('aria-label',labels.hold);
  let speedFrame=0;function speedTo(target){cancelAnimationFrame(speedFrame);const spin=disc.getAnimations().find(a=>a.animationName==='spin');if(!spin||reduced())return;const start=spin.playbackRate,time=performance.now();function step(now){const progress=Math.min(1,(now-time)/380);spin.updatePlaybackRate(start+(target-start)*(1-Math.pow(1-progress,3)));if(progress<1)speedFrame=requestAnimationFrame(step);}speedFrame=requestAnimationFrame(step);}
  const brake=()=>{table.classList.add('braking');speedTo(.08);};const release=()=>{table.classList.remove('braking');speedTo(1);};
