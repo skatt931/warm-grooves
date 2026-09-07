@@ -30,3 +30,9 @@
 .record-room .collection-player{height:100%;width:100%;padding-left:0}
 .record-room .main-record{left:50%;top:50%;transform:translate(-50%,-50%) rotate(-7deg);transform-style:flat}
 @media(max-width:760px){.record-title h2{min-height:66px;font-size:21px;line-height:1.18}.record-caption{gap:12px}.record-number{font-size:14px}.arrows{gap:4px}.round-button{width:34px;height:34px}.record-room .hero{display:block;min-height:100dvh}.record-room .collection-player{padding:0}.record-room .record-stage{height:58dvh}.record-room .main-record{width:min(76vw,320px);height:min(76vw,320px);left:50%;top:50%;transform:translate(-50%,-50%) rotate(-7deg)}.record-room .record-caption{padding-inline:4vw}}
+/* Room positioning is independent of the collection's negative margins and reveal transform. */
+.record-room .record-stage .main-record{margin:0;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-7deg);animation:room-sleeve-in .65s var(--ease) both}
+.record-room .record-stage .main-record:hover{transform:translate(-50%,-50%) rotate(-4deg)}
+@keyframes room-sleeve-in{from{opacity:0;transform:translate(-50%,calc(-50% + 24px)) rotate(-12deg) scale(.96)}to{opacity:1;transform:translate(-50%,-50%) rotate(-7deg)}}
+@media(prefers-reduced-motion:reduce){.record-room .record-stage .main-record{animation:none}}
+html[data-motion="off"] .record-room .record-stage .main-record{animation:none}
