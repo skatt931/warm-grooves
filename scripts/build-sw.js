@@ -2,7 +2,7 @@ import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 const files=await readdir('dist',{recursive:true,withFileTypes:true});
 const urls=files.filter(f=>f.isFile()&&f.name!=='sw.js').map(f=>'./' + `${f.parentPath}/${f.name}`.replace(/^dist\//,''));
-const hash=createHash('sha256');hash.update(await readFile('scripts/build-sw.js'));for(const url of urls)hash.update(await readFile('dist'+url));
+const hash=createHash('sha256');hash.update(await readFile('scripts/build-sw.js'));for(const url of urls)hash.update(await readFile('dist/'+url.replace(/^\.\//,'')));
 const version='warm-grooves-'+hash.digest('hex').slice(0,12);
 await writeFile('dist/sw.js',`const CACHE=${JSON.stringify(version)};
 const ASSETS=${JSON.stringify(['./',...urls])};
