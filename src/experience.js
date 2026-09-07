@@ -7,7 +7,7 @@ export async function lightAlbum(src){
  const token=++lightingToken;
  try{
   if(!palettes.has(src)){
-   const img=new Image();img.src=src;await img.decode();
+   const img=new Image();img.src=/^https?:/.test(src)?src:`${import.meta.env.BASE_URL}${String(src).replace(/^\/+/, '')}`;await img.decode();
    const canvas=document.createElement('canvas');canvas.width=canvas.height=24;
    const ctx=canvas.getContext('2d',{willReadFrequently:true});ctx.drawImage(img,0,0,24,24);
    const pixels=ctx.getImageData(0,0,24,24).data;let r=0,g=0,b=0,total=0;
