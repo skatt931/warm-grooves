@@ -110,4 +110,6 @@ export async function toggleRoom(force){
  else{clearTimeout(roomTimer);if(document.fullscreenElement)await document.exitFullscreen().catch(()=>{});}
 }
 for(const event of ['pointermove','pointerdown','keydown','focusin'])document.addEventListener(event,wakeRoom,{passive:true});
-document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement&&document.body.classList.contains('record-room')){document.body.classList.remove('record-room','room-idle');const exit=document.querySelector('.room-exit');if(exit)exit.hidden=true;document.querySelector('[data-action="room"]')?.setAttribute('aria-pressed','false');}});
+// The room is a UI mode of its own. Some mobile browsers emit a fullscreenchange
+// event even when their Fullscreen API request is ignored, so do not let that
+// browser event tear down the room unexpectedly.
