@@ -99,7 +99,12 @@ window.addEventListener('popstate',()=>{const id=Number(location.hash.replace('#
 window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();installEvent=event;const button=document.querySelector('#install');if(button)button.hidden=false;});
 async function install(){if(!installEvent)return;await installEvent.prompt();await installEvent.userChoice;installEvent=null;document.querySelector('#install').hidden=true;}
 for(const event of ['online','offline'])window.addEventListener(event,()=>{document.querySelector('#connection').textContent=navigator.onLine?'':t('offline');});
-async function init(){try{const response=await fetch(asset('/collection.json'));if(!response.ok)throw Error('Catalogue unavailable');records=await response.json();try{const galleryResponse=await fetch(asset('/gallery.json'));if(galleryResponse.ok)galleries=await galleryResponse.json();}catch{/* A record's local cover remains available. */}try{const archiveResponse=await fetch(asset('/archive.json'));if(archiveResponse.ok)archives=await archiveResponse.json();}catch{/* Archives are optional when metadata is unavailable. */}filtered=records;index=18;render();const deep=Number(location.hash.replace('#record-',''));if(deep)openRecord(deep,false);
+async function init(){try{const response=await fetch(asset('/collection.json'));if(!response.ok)throw Error('Catalogue unavailable');records=await response.json();try{const galleryResponse=await fetch(asset('/gallery.json'));if(galleryResponse.ok)galleries=await galleryResponse.json();}catch{/* A record's local cover remains available. */}try{const archiveResponse=await fetch(asset('/archive.json'));if(archiveResponse.ok)archives=await archiveResponse.json();}catch{/* Archives are optional when metadata is unavailable. */}filtered=records;
+ const previousStart=read('vinyl-last-start','');
+ const candidates=records.map((r,i)=>({id:String(r.id),index:i})).filter(r=>r.id!==previousStart);
+ index=candidates.length?candidates[Math.floor(Math.random()*candidates.length)].index:0;
+ if(records[index])save('vinyl-last-start',String(records[index].id));
+ render();const deep=Number(location.hash.replace('#record-',''));if(deep)openRecord(deep,false);
  if(import.meta.env.PROD&&'serviceWorker' in navigator){navigator.serviceWorker.register(asset('/sw.js')).catch(error=>console.warn('Offline registration unavailable:',error));}
  }catch(error){app.innerHTML=`<div class="load-error"><h1>${t('brand')}</h1><p>${lang==='uk'?'Не вдалося завантажити колекцію. Оновіть сторінку.':'The collection could not load. Please reload the page.'}</p><button onclick="location.reload()">${lang==='uk'?'Спробувати ще':'Try again'}</button></div>`;console.error(error);}}
 init();
