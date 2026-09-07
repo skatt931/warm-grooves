@@ -1,0 +1,36 @@
+async (page) => {
+ const assert=(value,message)=>{if(!value)throw Error(message);};
+ await page.context().setOffline(false);
+ await page.goto('http://127.0.0.1:5173/#record-773190');
+ await page.locator('#detail-title').waitFor();
+ const first=await page.locator('.gallery-image img').getAttribute('src');
+ assert(await page.locator('.gallery-thumbnails button').count()>=7,'Pressing photos remain available');
+ await page.locator('#gallery-content [data-action="photo-next"]').click();
+ const second=await page.locator('.gallery-image img').getAttribute('src');
+ assert(first!==second,'Next photo changes');
+ await page.locator('.gallery-thumbnails button').nth(3).click();
+ assert(await page.locator('.gallery-thumbnails button').nth(3).getAttribute('aria-pressed')==='true','Thumbnail selection');
+ await page.locator('.gallery-image').click();
+ assert(await page.locator('#photo-dialog').isVisible(),'Full image opens');
+ await page.keyboard.press('ArrowRight');
+ assert((await page.locator('#photo-dialog .gallery-navigation').innerText()).includes('05'),'Full-screen keyboard navigation');
+ await page.screenshot({path:'output/playwright/gallery-fullscreen.png'});
+ await page.keyboard.press('Escape');
+ assert(await page.locator('#detail-dialog').isVisible(),'Closing photo preserves release');
+ assert(await page.locator('body').evaluate(el=>el.classList.contains('modal-open')),'Background remains locked');
+ await page.setViewportSize({width:390,height:844});
+ await page.locator('.release-gallery').scrollIntoViewIfNeeded();
+ await page.screenshot({path:'output/playwright/gallery-mobile.png'});
+ assert(await page.locator('#detail-dialog').evaluate(el=>el.scrollWidth<=el.clientWidth),'Gallery fits phone');
+ await page.locator('.gallery-image').click();
+ assert(await page.locator('#photo-dialog').evaluate(el=>el.scrollWidth<=el.clientWidth),'Full photo fits phone');
+ await page.keyboard.press('Escape');
+ await page.locator('.artist-archive button').first().click();
+ assert(await page.locator('#photo-dialog').isVisible(),'Archive opens full-size');
+ assert((await page.locator('#photo-dialog .photo-credit').innerText()).includes('Wikimedia Commons'),'Archive provenance displayed');
+ assert((await page.locator('#photo-dialog .photo-credit').innerText()).includes('2017'),'Photograph date displayed independently of album date');
+ await page.locator('#photo-dialog .full-photo img').evaluate(img=>img.decode());
+ await page.screenshot({path:'output/playwright/artist-archive-mobile.png'});
+ await page.keyboard.press('Escape');await page.keyboard.press('Escape');
+ console.log('PASS: galleries, next/previous, thumbnails, full-screen viewer, keyboard navigation, nested dialogs and mobile layout.');
+}
