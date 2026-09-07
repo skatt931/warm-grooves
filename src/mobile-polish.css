@@ -1,9 +1,12 @@
 .scroll-hint{width:1px;height:18px;opacity:0}
 .record-title h2{min-height:60px;display:flex;align-items:flex-start;overflow-wrap:anywhere}
-.gallery-thumbnails img{display:block;width:80px;height:80px;object-fit:cover;background:#d9d0c1}
-.full-photo{display:block;width:100%;padding:0;cursor:zoom-out;touch-action:pan-y}
+.gallery-thumbnails{max-width:100%;min-width:0;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;overscroll-behavior-y:none;touch-action:pan-x}
+.gallery-thumbnails>button{overflow:hidden}
+.gallery-thumbnails img{display:block;width:100%;height:100%;object-fit:cover;background:#d9d0c1}
+.full-photo{display:block;width:100%;padding:0;cursor:zoom-out;touch-action:none;user-select:none}
 .photo-minimal .photo-top,.photo-minimal .gallery-navigation,.photo-minimal .photo-credit{opacity:0;pointer-events:none}
 .photo-minimal .full-photo{position:absolute;inset:0;display:grid;place-items:center;background:#0d0e0b}
 .photo-minimal .full-photo img{max-height:96%;max-width:96%;object-fit:contain}
 .photo-minimal::backdrop{background:#0d0e0b}
+#photo-dialog{overflow-x:hidden}
 @media(max-width:760px){.record-title h2{min-height:66px;font-size:21px;line-height:1.18}.record-caption{gap:12px}.record-number{font-size:14px}.arrows{gap:4px}.round-button{width:34px;height:34px}.record-room .hero{display:block;min-height:100dvh}.record-room .collection-player{padding:0}.record-room .record-stage{height:58dvh}.record-room .main-record{width:min(76vw,320px);height:min(76vw,320px);left:calc(50% - min(38vw,160px));top:5dvh}.record-room .record-caption{padding-inline:4vw}}
