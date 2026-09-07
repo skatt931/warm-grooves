@@ -11,4 +11,5 @@
 #photo-dialog{overflow-x:hidden}
 .record-room .hero{height:100dvh;min-height:100dvh;overflow:hidden}
 .record-room .collection-player{height:100%;width:100%;padding-left:0}
-@media(max-width:760px){.record-title h2{min-height:66px;font-size:21px;line-height:1.18}.record-caption{gap:12px}.record-number{font-size:14px}.arrows{gap:4px}.round-button{width:34px;height:34px}.record-room .hero{display:block;min-height:100dvh}.record-room .collection-player{padding:0}.record-room .record-stage{height:58dvh}.record-room .main-record{width:min(76vw,320px);height:min(76vw,320px);left:calc(50% - min(38vw,160px));top:5dvh}.record-room .record-caption{padding-inline:4vw}}
+.record-room .main-record{left:50%;top:50%;transform:translate(-50%,-50%) rotate(-7deg);transform-style:flat}
+@media(max-width:760px){.record-title h2{min-height:66px;font-size:21px;line-height:1.18}.record-caption{gap:12px}.record-number{font-size:14px}.arrows{gap:4px}.round-button{width:34px;height:34px}.record-room .hero{display:block;min-height:100dvh}.record-room .collection-player{padding:0}.record-room .record-stage{height:58dvh}.record-room .main-record{width:min(76vw,320px);height:min(76vw,320px);left:50%;top:50%;transform:translate(-50%,-50%) rotate(-7deg)}.record-room .record-caption{padding-inline:4vw}}
